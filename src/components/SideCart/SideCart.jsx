@@ -3,9 +3,38 @@ import { useEffect, useState } from "react";
 
 const SideCart = ({watchTime}) => {
 const [time,setTime]=useState("watchTime")
+
+const [breakTime,setBreakTime]=useState(0)
+
+
+const handleBreakTime =(bt)=>{
+localStorage.setItem("break-time",bt);
+setBreakTime(bt);
+}
+
+const handleComplete=()=>{
+  const remainTime =time-breakTime;
+  localStorage.setItem("complete",remainTime);
+ setTime(remainTime)
+
+}
   useEffect(()=>{
     const getWatchTimeFromLocalStorage=JSON.parse(localStorage.getItem("watch-time"));
-setTime(getWatchTimeFromLocalStorage);
+     if(getWatchTimeFromLocalStorage){
+
+      setTime(getWatchTimeFromLocalStorage);
+    }else{
+      setTime(0)
+    }
+  
+    const getBreakTimeFromLocalStorage=JSON.parse(localStorage.getItem("break-time"));
+    if(getBreakTimeFromLocalStorage){
+
+      setBreakTime(getBreakTimeFromLocalStorage)
+    }else{
+      setBreakTime(0)
+    }
+   
   },[watchTime])
 
   return (
@@ -18,15 +47,15 @@ setTime(getWatchTimeFromLocalStorage);
       </div>
       <h5 className="mt-5">Add Break time</h5>
       <button
-       
+       onClick={()=>handleBreakTime(15)}
         className="w-25 btn-circle m-1 btn btn-info"
       >
         15
       </button>
       <button className="w-25 btn-circle bg-warning btn btn-info">20</button>
       <button className="w-25 btn-circle m-1 bg-danger btn btn-info">25</button>
-      <input type="text"  disabled />
-      <button  className="mt-5 btn btn-info w-100">
+      <input type="text" value={breakTime}  disabled />
+      <button onClick={handleComplete} className="mt-5 btn btn-info w-100">
         Complete
       </button>
     </div>
