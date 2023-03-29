@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
 
 
-const SideCart = () => {
-
+const SideCart = ({watchTime}) => {
+const [time,setTime]=useState("watchTime")
+  useEffect(()=>{
+    const getWatchTimeFromLocalStorage=JSON.parse(localStorage.getItem("watch-time"));
+setTime(getWatchTimeFromLocalStorage);
+  },[watchTime])
 
   return (
     <div>
@@ -9,7 +14,7 @@ const SideCart = () => {
 
       <div className="mt-5 text-center">
         <p>total watch time</p>
-        <input type="text" value={0} disabled />
+        <input type="text" value={time} disabled />
       </div>
       <h5 className="mt-5">Add Break time</h5>
       <button
